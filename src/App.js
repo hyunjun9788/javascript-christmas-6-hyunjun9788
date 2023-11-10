@@ -9,7 +9,7 @@ class App {
   }
   async run() {
     await this.inputVisitDate();
-    this.inputOrderInfo = await this.inputOrderMenuAndCount();
+    await this.inputOrderMenuAndCount();
   }
 
   async inputVisitDate() {
@@ -26,9 +26,11 @@ class App {
   async inputOrderMenuAndCount() {
     try {
       const orderMenu = await InputView.inputMenuAndCount();
-      const orderList = this.common.processOrderInfo(orderMenu);
-      const isIncludedMenu = this.common.isIncludeMenu(orderList);
+      this.orderList = this.common.processOrderInfo(orderMenu);
+      const isIncludedMenu = this.common.isIncludeMenu(this.orderList);
       this.validation.isValidInputMenuAndCount(isIncludedMenu);
+      this.sumCounts = this.sumInputCounts(this.orderList);
+      this.validation.isLimitCount(this.sumCounts);
     } catch (e) {
       Console.print(e.message);
       await this.inputOrderMenuAndCount();
@@ -37,6 +39,10 @@ class App {
 
   convertToNum(Date) {
     return Number(Date);
+  }
+
+  sumInputCounts(orderList) {
+    return orderList.reduce((total, order) => total + order.parsedCount, 0);
   }
 }
 
