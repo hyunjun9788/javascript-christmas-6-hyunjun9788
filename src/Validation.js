@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE } from "./constant/constants.js";
+import { ERROR_MESSAGE, LIMIT_ORDER_COUNT } from "./constant/constants.js";
 
 class Validation {
   constructor() {}
@@ -16,6 +16,16 @@ class Validation {
   isDuplicateMenu(menu, menuList) {
     if (menuList.includes(menu)) {
       throw new Error(ERROR_MESSAGE.INVALID_ORDER);
+    }
+  }
+  isValidCount(count) {
+    if (isNaN(count)) {
+      throw new Error(ERROR_MESSAGE.INVALID_ORDER);
+    }
+  }
+  isLimitCount(sumCounts) {
+    if (sumCounts > LIMIT_ORDER_COUNT) {
+      throw new Error(ERROR_MESSAGE.LIMIT_SUM_COUNT);
     }
   }
 }
