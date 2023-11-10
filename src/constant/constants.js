@@ -21,7 +21,9 @@ export const MENU_ITEMS = {
   },
 };
 
+export const LIMIT_ORDER_COUNT = 20;
 export const ERROR_MESSAGE = {
   INVALID_DATE: "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.",
   INVALID_ORDER: "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.",
+  LIMIT_SUM_COUNT: "[ERROR] 메뉴는 한 번에 최대 20개까지만 주문할 수 있습니다.",
 };
