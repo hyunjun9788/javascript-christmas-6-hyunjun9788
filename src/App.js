@@ -78,23 +78,26 @@ class App {
 
   christmasDiscount() {
     const endDate = new Date("2023-12-25");
-    const daysUntilChristmas = Math.ceil(
-      endDate - new Date(`2023-12-${this.visitDate}`)
+    const userVisitDate = new Date(`2023-12-${this.visitDateNum}`);
+    const timeDifference = endDate.getTime() - userVisitDate.getTime();
+    const daysUntilChristmas = Math.floor(
+      timeDifference / (1000 * 60 * 60 * 24)
     );
-
-    if (daysUntilChristmas >= 1 && daysUntilChristmas <= 25) {
-      const christmasDiscount = 1000 + (25 - daysUntilChristmas) * 100;
+    console.log(daysUntilChristmas);
+    if (daysUntilChristmas >= 0 && daysUntilChristmas <= 24) {
+      const christmasDiscount = 1000 + (24 - daysUntilChristmas) * 100;
       this.totalPurchasePrice -= christmasDiscount;
     }
   }
 
   weekdayAndWeekendDiscount() {
-    const dayOfWeek = new Date(`2023-12-${this.visitDate}`).getDay();
-
+    const dayOfWeek = new Date(`2023-12-${this.visitDateNum}`).getDay();
+    console.log(dayOfWeek);
     if (dayOfWeek >= 0 && dayOfWeek <= 4) {
       this.totalPurchasePrice -= 2023 * this.sumDessertCount();
     } else {
       this.totalPurchasePrice -= 2023 * this.sumMainCount();
+      console.log(this.totalPurchasePrice);
     }
   }
 
@@ -112,7 +115,7 @@ class App {
     }, 0);
   }
   specialDiscount() {
-    if (this.hasSpecialEvent()) {
+    if (this.hasSpecialEvent(this.visitDateNum)) {
       this.totalPurchasePrice -= 1000;
     }
   }
