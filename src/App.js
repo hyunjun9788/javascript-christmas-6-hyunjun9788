@@ -13,6 +13,10 @@ class App {
     this.visitDate = await this.inputVisitDate();
     await this.inputOrderMenuAndCount();
     this.totalPurchasePrice = this.getTotalOrderPrice(this.orderList);
+
+    this.christmasDiscount();
+    this.weekdayAndWeekendDiscount();
+    this.specialDiscount();
     console.log(this.totalPurchasePrice);
     this.printPreviewMessage(this.visitDateNum);
     OutputView.printMenu();
@@ -92,6 +96,13 @@ class App {
     } else {
       this.totalPurchasePrice -= 2023 * this.sumMainCount();
     }
+  }
+
+  sumDessertCount() {
+    return this.orderList.reduce((total, order) => {
+      const category = this.common.getCategory(order.menuItem);
+      return category === "디저트" ? total + order.parsedCount : total;
+    }, 0);
   }
 }
 
