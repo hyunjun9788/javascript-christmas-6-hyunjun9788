@@ -83,6 +83,16 @@ class App {
       this.totalPurchasePrice -= christmasDiscount;
     }
   }
+
+  weekdayAndWeekendDiscount() {
+    const dayOfWeek = new Date(`2023-12-${this.visitDate}`).getDay();
+
+    if (dayOfWeek >= 0 && dayOfWeek <= 4) {
+      this.totalPurchasePrice -= 2023 * this.sumDessertCount();
+    } else {
+      this.totalPurchasePrice -= 2023 * this.sumMainCount();
+    }
+  }
 }
 
 export default App;
