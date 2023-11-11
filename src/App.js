@@ -71,6 +71,18 @@ class App {
   printPreviewMessage(date) {
     Console.print(`12월 ${date}일에 우테코 식당에서 받을 이벤트 혜택 미리보기`);
   }
+
+  christmasDiscount() {
+    const endDate = new Date("2023-12-25");
+    const daysUntilChristmas = Math.ceil(
+      endDate - new Date(`2023-12-${this.visitDate}`)
+    );
+
+    if (daysUntilChristmas >= 1 && daysUntilChristmas <= 25) {
+      const christmasDiscount = 1000 + (25 - daysUntilChristmas) * 100;
+      this.totalPurchasePrice -= christmasDiscount;
+    }
+  }
 }
 
 export default App;
