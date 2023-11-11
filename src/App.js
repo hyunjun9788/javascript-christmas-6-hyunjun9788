@@ -104,6 +104,13 @@ class App {
       return category === "디저트" ? total + order.parsedCount : total;
     }, 0);
   }
+
+  sumMainCount() {
+    return this.orderList.reduce((total, order) => {
+      const category = this.common.getCategory(order.menuItem);
+      return category === "메인" ? total + order.parsedCount : total;
+    }, 0);
+  }
 }
 
 export default App;
