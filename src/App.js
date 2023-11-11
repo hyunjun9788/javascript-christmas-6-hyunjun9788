@@ -111,6 +111,23 @@ class App {
       return category === "메인" ? total + order.parsedCount : total;
     }, 0);
   }
+  specialDiscount() {
+    if (this.hasSpecialEvent()) {
+      this.totalPurchasePrice -= 1000;
+    }
+  }
+
+  hasSpecialEvent(currentDay) {
+    const eventCalendar = [
+      "2023-12-03",
+      "2023-12-10",
+      "2023-12-17",
+      "2023-12-24",
+      "2023-12-31",
+    ];
+    const currentDate = `2023-12-${currentDay}`;
+    return eventCalendar.includes(currentDate);
+  }
 }
 
 export default App;
