@@ -54,6 +54,16 @@ const OutputView = {
       ).toLocaleString()}원`
     );
   },
+  printDiscountedPaymentPrice(price, originalPurchasePrice) {
+    const discountedAmount =
+      originalPurchasePrice >= 10000 ? price : originalPurchasePrice;
+    Console.print(
+      `<할인 후 예상 결제 금액>\n${discountedAmount.toLocaleString()}원`
+    );
+  },
+  printBadge(badgeName) {
+    Console.print(`<12월 이벤트 배지>\n${badgeName ? badgeName : "없음"}`);
+  },
 };
 
 export default OutputView;
