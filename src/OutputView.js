@@ -9,6 +9,9 @@ const OutputView = {
       Console.print(`${menuItem} ${count}개`);
     });
   },
+  printOriginalPurchasePrice(orginalTotalPrice) {
+    Console.print(`<할인 전 총주문 금액>\n${orginalTotalPrice}원`);
+  },
 };
 
 export default OutputView;
