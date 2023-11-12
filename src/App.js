@@ -28,6 +28,12 @@ class App {
     OutputView.printMenu(this.orderList);
     OutputView.printOriginalPurchasePrice(this.originalPurchasePrice);
     OutputView.printGiftMenu(this.bonusMenu);
+    OutputView.printBenefitDetails(
+      this.dDayDiscount,
+      this.weekDayDiscount,
+      this.weekendDiscount,
+      this.bonusMenuPrice
+    );
   }
 
   async inputVisitDate() {
@@ -91,10 +97,10 @@ class App {
     const daysUntilChristmas = Math.floor(
       timeDifference / (1000 * 60 * 60 * 24)
     );
-    console.log(daysUntilChristmas);
+
     if (daysUntilChristmas >= 0 && daysUntilChristmas <= 24) {
-      const christmasDiscount = 1000 + (24 - daysUntilChristmas) * 100;
-      this.discountedTotalPrice -= christmasDiscount;
+      this.dDayDiscount = 1000 + (24 - daysUntilChristmas) * 100;
+      this.discountedTotalPrice -= this.dDayDiscount;
     }
   }
 
@@ -102,9 +108,11 @@ class App {
     const dayOfWeek = new Date(`2023-12-${this.visitDateNum}`).getDay();
     console.log(dayOfWeek);
     if (dayOfWeek >= 0 && dayOfWeek <= 4) {
-      this.discountedTotalPrice -= 2023 * this.sumDessertCount();
+      this.weekDayDiscount = 2023 * this.sumDessertCount();
+      this.discountedTotalPrice -= this.weekDayDiscount;
     } else {
-      this.discountedTotalPrice -= 2023 * this.sumMainCount();
+      this.weekendDiscount = 2023 * this.sumMainCount();
+      this.discountedTotalPrice -= this.weekendDiscount;
       console.log(this.discountedTotalPrice);
     }
   }
