@@ -28,5 +28,14 @@ class Common {
     }
     return this.isIncludedMenu;
   }
+
+  getCategory(menuItem) {
+    for (const category in MENU_ITEMS) {
+      if (MENU_ITEMS[category].hasOwnProperty(menuItem)) {
+        return category;
+      }
+    }
+    return null;
+  }
 }
 export default Common;
