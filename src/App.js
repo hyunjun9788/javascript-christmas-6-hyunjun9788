@@ -62,6 +62,10 @@ class App {
     try {
       const orderMenu = await InputView.inputMenuAndCount();
       this.orderList = this.common.processOrderInfo(orderMenu);
+      const isBeverageOnly = this.orderList.every(
+        (order) => this.common.getCategory(order.menuItem) === "음료"
+      );
+      this.validation.isBeverageOnlyOrder(isBeverageOnly);
       const isIncludedMenu = this.common.isIncludeMenu(this.orderList);
       this.validation.isValidInputMenuAndCount(isIncludedMenu);
       this.sumCounts = this.sumInputCounts(this.orderList);
