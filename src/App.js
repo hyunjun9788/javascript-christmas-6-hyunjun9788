@@ -9,17 +9,20 @@ class App {
     this.validation = new Validation();
     this.common = new Common();
     this.originalPurchasePrice = 0;
+    this.bonusMenuPrice = 0;
   }
   async run() {
     this.visitDate = await this.inputVisitDate();
     await this.inputOrderMenuAndCount();
-    this.totalPurchasePrice = this.getTotalOrderPrice(this.orderList);
+    this.discountedTotalPrice = this.getTotalOrderPrice(this.orderList);
     this.originalPurchasePrice = this.getTotalOrderPrice(this.orderList);
     this.christmasDiscount();
     this.weekdayAndWeekendDiscount();
     this.specialDiscount();
     this.giftChampagneEvent();
-    console.log(this.totalPurchasePrice);
+    this.totalBenefitPrice = this.getTotalBenefitPrice();
+    console.log(this.discountedTotalPrice);
+    console.log(this.totalBenefitPrice);
     this.printPreviewMessage(this.visitDateNum);
     OutputView.printMenu();
   }
@@ -88,7 +91,7 @@ class App {
     console.log(daysUntilChristmas);
     if (daysUntilChristmas >= 0 && daysUntilChristmas <= 24) {
       const christmasDiscount = 1000 + (24 - daysUntilChristmas) * 100;
-      this.totalPurchasePrice -= christmasDiscount;
+      this.discountedTotalPrice -= christmasDiscount;
     }
   }
 
@@ -96,10 +99,10 @@ class App {
     const dayOfWeek = new Date(`2023-12-${this.visitDateNum}`).getDay();
     console.log(dayOfWeek);
     if (dayOfWeek >= 0 && dayOfWeek <= 4) {
-      this.totalPurchasePrice -= 2023 * this.sumDessertCount();
+      this.discountedTotalPrice -= 2023 * this.sumDessertCount();
     } else {
-      this.totalPurchasePrice -= 2023 * this.sumMainCount();
-      console.log(this.totalPurchasePrice);
+      this.discountedTotalPrice -= 2023 * this.sumMainCount();
+      console.log(this.discountedTotalPrice);
     }
   }
 
@@ -118,7 +121,7 @@ class App {
   }
   specialDiscount() {
     if (this.hasSpecialEvent(this.visitDateNum)) {
-      this.totalPurchasePrice -= 1000;
+      this.discountedTotalPrice -= 1000;
     }
   }
 
@@ -136,8 +139,16 @@ class App {
   giftChampagneEvent() {
     if (this.originalPurchasePrice >= 120000) {
       const champagnePrice = MENU_ITEMS.음료.샴페인;
-      this.totalPurchasePrice -= champagnePrice;
+      this.bonusMenuPrice += champagnePrice;
     }
+  }
+  getTotalBenefitPrice() {
+    const totalBenefitPrice =
+      this.originalPurchasePrice -
+      this.discountedTotalPrice +
+      this.bonusMenuPrice;
+
+    return totalBenefitPrice;
   }
 }
 
