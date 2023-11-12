@@ -11,6 +11,7 @@ class App {
     this.originalPurchasePrice = 0;
     this.bonusMenuPrice = 0;
     this.badgeName = "";
+    this.bonusMenu = "";
   }
   async run() {
     this.visitDate = await this.inputVisitDate();
@@ -23,11 +24,10 @@ class App {
     this.giftChampagneEvent();
     this.totalBenefitPrice = this.getTotalBenefitPrice();
     this.badgeName = this.badgeEvent();
-    console.log(this.discountedTotalPrice);
-    console.log(this.totalBenefitPrice);
-    console.log(this.badgeName);
     this.printPreviewMessage(this.visitDateNum);
-    OutputView.printMenu();
+    OutputView.printMenu(this.orderList);
+    OutputView.printOriginalPurchasePrice(this.originalPurchasePrice);
+    OutputView.printGiftMenu(this.bonusMenu);
   }
 
   async inputVisitDate() {
@@ -141,8 +141,11 @@ class App {
   }
   giftChampagneEvent() {
     if (this.originalPurchasePrice >= 120000) {
+      this.bonusMenu += "샴페인 1개";
       const champagnePrice = MENU_ITEMS.음료.샴페인;
       this.bonusMenuPrice += champagnePrice;
+    } else {
+      this.bonusMenu += "없음";
     }
   }
   getTotalBenefitPrice() {
