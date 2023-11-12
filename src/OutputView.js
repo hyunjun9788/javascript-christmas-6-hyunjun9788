@@ -13,7 +13,7 @@ const OutputView = {
     Console.print(`<할인 전 총주문 금액>\n${orginalTotalPrice}원`);
   },
   printGiftMenu(menu) {
-    Console.print(`<증정 메뉴>\n${menu}`);
+    Console.print(`<증정 메뉴>\n${menu ? menu : "없음"}`);
   },
   printBenefitDetails(
     dDayDiscount,
@@ -36,6 +36,9 @@ const OutputView = {
     if (bonusMenuPrice > 0) {
       Console.print(`증정 이벤트: ${(-bonusMenuPrice).toLocaleString()}원`);
     }
+  },
+  printTotalBenefitPrice(price) {
+    Console.print(`<총혜택 금액>\n${(-price).toLocaleString()}원`);
   },
 };
 
