@@ -28,6 +28,11 @@ class Validation {
       throw new Error(ERROR_MESSAGE.LIMIT_SUM_COUNT);
     }
   }
+  isBeverageOnlyOrder(isBeverageOnly) {
+    if (isBeverageOnly) {
+      throw new Error(ERROR_MESSAGE.BEVERAGE_ONLY_ORDER);
+    }
+  }
 }
 
 export default Validation;
