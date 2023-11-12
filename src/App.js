@@ -8,15 +8,17 @@ class App {
   constructor() {
     this.validation = new Validation();
     this.common = new Common();
+    this.originalPurchasePrice = 0;
   }
   async run() {
     this.visitDate = await this.inputVisitDate();
     await this.inputOrderMenuAndCount();
     this.totalPurchasePrice = this.getTotalOrderPrice(this.orderList);
-
+    this.originalPurchasePrice = this.getTotalOrderPrice(this.orderList);
     this.christmasDiscount();
     this.weekdayAndWeekendDiscount();
     this.specialDiscount();
+    this.giftChampagneEvent();
     console.log(this.totalPurchasePrice);
     this.printPreviewMessage(this.visitDateNum);
     OutputView.printMenu();
@@ -130,6 +132,12 @@ class App {
     ];
     const currentDate = `2023-12-${currentDay}`;
     return eventCalendar.includes(currentDate);
+  }
+  giftChampagneEvent() {
+    if (this.originalPurchasePrice >= 120000) {
+      const champagnePrice = MENU_ITEMS.음료.샴페인;
+      this.totalPurchasePrice -= champagnePrice;
+    }
   }
 }
 
