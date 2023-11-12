@@ -1,7 +1,14 @@
-export default OutputView = {
-    printMenu() {
-        Console.print("<주문 메뉴>");
-        // ...
-    }
-    // ...
-}
+import { Console } from "@woowacourse/mission-utils";
+
+const OutputView = {
+  printMenu(orderList) {
+    Console.print("<주문 메뉴>");
+    orderList.forEach((order) => {
+      const menuItem = order.menuItem;
+      const count = order.parsedCount;
+      Console.print(`${menuItem} ${count}개`);
+    });
+  },
+};
+
+export default OutputView;
