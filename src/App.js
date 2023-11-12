@@ -10,6 +10,7 @@ class App {
     this.common = new Common();
     this.originalPurchasePrice = 0;
     this.bonusMenuPrice = 0;
+    this.badgeName = "";
   }
   async run() {
     this.visitDate = await this.inputVisitDate();
@@ -21,8 +22,10 @@ class App {
     this.specialDiscount();
     this.giftChampagneEvent();
     this.totalBenefitPrice = this.getTotalBenefitPrice();
+    this.badgeName = this.badgeEvent();
     console.log(this.discountedTotalPrice);
     console.log(this.totalBenefitPrice);
+    console.log(this.badgeName);
     this.printPreviewMessage(this.visitDateNum);
     OutputView.printMenu();
   }
@@ -149,6 +152,18 @@ class App {
       this.bonusMenuPrice;
 
     return totalBenefitPrice;
+  }
+  badgeEvent() {
+    if (this.totalBenefitPrice >= 5000 && this.totalBenefitPrice < 10000) {
+      this.badgeName += "별";
+    }
+    if (this.totalBenefitPrice >= 10000 && this.totalBenefitPrice < 20000) {
+      this.badgeName += "트리";
+    }
+    if (this.totalBenefitPrice > 20000) {
+      this.badgeName += "산타";
+    }
+    return this.badgeName;
   }
 }
 
