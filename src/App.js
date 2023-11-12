@@ -18,6 +18,7 @@ class App {
     await this.inputOrderMenuAndCount();
     this.discountedTotalPrice = this.getTotalOrderPrice(this.orderList);
     this.originalPurchasePrice = this.getTotalOrderPrice(this.orderList);
+
     this.christmasDiscount();
     this.weekdayAndWeekendDiscount();
     this.specialDiscount();
@@ -34,6 +35,7 @@ class App {
       this.weekendDiscount,
       this.bonusMenuPrice
     );
+    OutputView.printTotalBenefitPrice(this.totalBenefitPrice);
   }
 
   async inputVisitDate() {
