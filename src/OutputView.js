@@ -45,6 +45,15 @@ const OutputView = {
       Console.print(`증정 이벤트: ${(-bonusMenuPrice).toLocaleString()}원`);
     }
   },
+
+  printTotalBenefitPrice(price, originalPurchasePrice) {
+    Console.print(
+      `<총혜택 금액>\n${(originalPurchasePrice >= 10000
+        ? -price
+        : 0
+      ).toLocaleString()}원`
+    );
+  },
 };
 
 export default OutputView;
