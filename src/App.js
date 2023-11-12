@@ -30,12 +30,21 @@ class App {
     OutputView.printOriginalPurchasePrice(this.originalPurchasePrice);
     OutputView.printGiftMenu(this.bonusMenu);
     OutputView.printBenefitDetails(
+      this.originalPurchasePrice,
       this.dDayDiscount,
       this.weekDayDiscount,
       this.weekendDiscount,
       this.bonusMenuPrice
     );
-    OutputView.printTotalBenefitPrice(this.totalBenefitPrice);
+    OutputView.printTotalBenefitPrice(
+      this.totalBenefitPrice,
+      this.originalPurchasePrice
+    );
+    OutputView.printDiscountedPaymentPrice(
+      this.discountedTotalPrice,
+      this.originalPurchasePrice
+    );
+    OutputView.printBadge(this.badgeName);
   }
 
   async inputVisitDate() {
