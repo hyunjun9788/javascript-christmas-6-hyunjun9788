@@ -31,23 +31,16 @@ const OutputView = {
       Console.print("없음");
       return;
     }
-    if (dDayDiscount > 0) {
-      Console.print(
-        `크리스마스 디데이 할인: ${(-dDayDiscount).toLocaleString()}원`
-      );
-    }
-    if (weekDayDiscount > 0) {
-      Console.print(`평일 할인: ${(-weekDayDiscount).toLocaleString()}원`);
-    }
-    if (weekendDiscount > 0) {
-      Console.print(`주말 할인: ${(-weekendDiscount).toLocaleString()}원`);
-    }
-    if (specialDiscount > 0) {
-      Console.print(`특별 할인: ${(-specialDiscount).toLocaleString()}원`);
-    }
-    if (bonusMenuPrice > 0) {
-      Console.print(`증정 이벤트: ${(-bonusMenuPrice).toLocaleString()}원`);
-    }
+    const printDiscount = (label, discount) => {
+      if (discount > 0) {
+        Console.print(`${label}: ${(-discount).toLocaleString()}원`);
+      }
+    };
+    printDiscount("크리스마스 디데이 할인", dDayDiscount);
+    printDiscount("평일 할인", weekDayDiscount);
+    printDiscount("주말 할인", weekendDiscount);
+    printDiscount("특별 할인", specialDiscount);
+    printDiscount("증정 이벤트", bonusMenuPrice);
   },
 
   printTotalBenefitPrice(price, originalPurchasePrice) {
