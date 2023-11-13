@@ -14,38 +14,14 @@ class App {
     this.bonusMenu = "";
   }
   async run() {
-    this.visitDate = await this.inputVisitDate();
+    await this.inputVisitDate();
     await this.inputOrderMenuAndCount();
-    this.discountedTotalPrice = this.getTotalOrderPrice(this.orderList);
-    this.originalPurchasePrice = this.getTotalOrderPrice(this.orderList);
-
-    this.christmasDiscount();
-    this.weekdayAndWeekendDiscount();
-    this.specialDiscount();
-    this.giftChampagneEvent();
-    this.totalBenefitPrice = this.getTotalBenefitPrice();
+    this.calculateTotalPrices();
+    this.applyDiscounts();
+    this.calculateTotalBenefitPrice();
     this.badgeName = this.badgeEvent();
-    this.printPreviewMessage(this.visitDateNum);
-    OutputView.printMenu(this.orderList);
-    OutputView.printOriginalPurchasePrice(this.originalPurchasePrice);
-    OutputView.printGiftMenu(this.bonusMenu);
-    OutputView.printBenefitDetails(
-      this.originalPurchasePrice,
-      this.dDayDiscount,
-      this.weekDayDiscount,
-      this.weekendDiscount,
-      this.specialDiscountPrice,
-      this.bonusMenuPrice
-    );
-    OutputView.printTotalBenefitPrice(
-      this.totalBenefitPrice,
-      this.originalPurchasePrice
-    );
-    OutputView.printDiscountedPaymentPrice(
-      this.discountedTotalPrice,
-      this.originalPurchasePrice
-    );
-    OutputView.printBadge(this.badgeName);
+
+    this.printResults();
   }
 
   async inputVisitDate() {
@@ -74,9 +50,20 @@ class App {
     } catch (e) {
       Console.print(e.message);
       this.orderList = [];
-      console.log(this.orderList);
       await this.inputOrderMenuAndCount();
     }
+  }
+
+  calculateTotalPrices() {
+    this.discountedTotalPrice = this.getTotalOrderPrice(this.orderList);
+    this.originalPurchasePrice = this.getTotalOrderPrice(this.orderList);
+  }
+
+  applyDiscounts() {
+    this.christmasDiscount();
+    this.weekdayAndWeekendDiscount();
+    this.specialDiscount();
+    this.giftChampagneEvent();
   }
 
   convertToNum(Date) {
@@ -102,10 +89,6 @@ class App {
       }
     });
     return totalPrice;
-  }
-
-  printPreviewMessage(date) {
-    Console.print(`12월 ${date}일에 우테코 식당에서 받을 이벤트 혜택 미리보기`);
   }
 
   christmasDiscount() {
@@ -173,13 +156,11 @@ class App {
       this.bonusMenu += "없음";
     }
   }
-  getTotalBenefitPrice() {
-    const totalBenefitPrice =
+  calculateTotalBenefitPrice() {
+    this.totalBenefitPrice =
       this.originalPurchasePrice -
       this.discountedTotalPrice +
       this.bonusMenuPrice;
-
-    return totalBenefitPrice;
   }
   badgeEvent() {
     if (this.totalBenefitPrice >= 5000 && this.totalBenefitPrice < 10000) {
@@ -192,6 +173,29 @@ class App {
       this.badgeName += "산타";
     }
     return this.badgeName;
+  }
+  printResults() {
+    OutputView.printPreviewMessage(this.visitDateNum);
+    OutputView.printMenu(this.orderList);
+    OutputView.printOriginalPurchasePrice(this.originalPurchasePrice);
+    OutputView.printGiftMenu(this.bonusMenu);
+    OutputView.printBenefitDetails(
+      this.originalPurchasePrice,
+      this.dDayDiscount,
+      this.weekDayDiscount,
+      this.weekendDiscount,
+      this.specialDiscountPrice,
+      this.bonusMenuPrice
+    );
+    OutputView.printTotalBenefitPrice(
+      this.totalBenefitPrice,
+      this.originalPurchasePrice
+    );
+    OutputView.printDiscountedPaymentPrice(
+      this.discountedTotalPrice,
+      this.originalPurchasePrice
+    );
+    OutputView.printBadge(this.badgeName);
   }
 }
 
