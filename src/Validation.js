@@ -3,7 +3,7 @@ import { ERROR_MESSAGE, LIMIT_ORDER_COUNT } from "./constant/constants.js";
 class Validation {
   constructor() {}
   isValidInputDate(date) {
-    if (date < 1 || date > 31 || isNaN(date)) {
+    if (date < 1 || date > 31 || !Number.isInteger(date)) {
       throw new Error(ERROR_MESSAGE.INVALID_DATE);
     }
   }
