@@ -20,7 +20,6 @@ class App {
     this.applyDiscounts();
     this.calculateTotalBenefitPrice();
     this.badgeName = this.badgeEvent();
-
     this.printResults();
   }
 
@@ -39,19 +38,23 @@ class App {
     try {
       const orderMenu = await InputView.inputMenuAndCount();
       this.orderList = this.common.processOrderInfo(orderMenu);
-      const isBeverageOnly = this.orderList.every(
-        (order) => this.common.getCategory(order.menuItem) === "음료"
-      );
-      this.validation.isBeverageOnlyOrder(isBeverageOnly);
-      const isIncludedMenu = this.common.isIncludeMenu(this.orderList);
-      this.validation.isValidInputMenuAndCount(isIncludedMenu);
-      this.sumCounts = this.sumInputCounts(this.orderList);
-      this.validation.isLimitCount(this.sumCounts);
+      this.processAndValidateOrder();
     } catch (e) {
       Console.print(e.message);
       this.orderList = [];
       await this.inputOrderMenuAndCount();
     }
+  }
+
+  processAndValidateOrder() {
+    const isBeverageOnly = this.orderList.every(
+      (order) => this.common.getCategory(order.menuItem) === "음료"
+    );
+    this.validation.isBeverageOnlyOrder(isBeverageOnly);
+    this.sumCounts = this.sumInputCounts(this.orderList);
+    const isIncludedMenu = this.common.isIncludeMenu(this.orderList);
+    this.validation.isValidInputMenuAndCount(isIncludedMenu);
+    this.validation.isLimitCount(this.sumCounts);
   }
 
   calculateTotalPrices() {
