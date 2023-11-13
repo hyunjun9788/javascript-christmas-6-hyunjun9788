@@ -93,7 +93,6 @@ class App {
     orderList.forEach((order) => {
       const menuItem = order.menuItem;
       const parsedCount = order.parsedCount;
-
       for (const category in MENU_ITEMS) {
         if (MENU_ITEMS[category][menuItem] !== undefined) {
           const menuPrice = MENU_ITEMS[category][menuItem];
@@ -104,6 +103,7 @@ class App {
     });
     return totalPrice;
   }
+
   printPreviewMessage(date) {
     Console.print(`12월 ${date}일에 우테코 식당에서 받을 이벤트 혜택 미리보기`);
   }
@@ -124,14 +124,12 @@ class App {
 
   weekdayAndWeekendDiscount() {
     const dayOfWeek = new Date(`2023-12-${this.visitDateNum}`).getDay();
-    console.log(dayOfWeek);
     if (dayOfWeek >= 0 && dayOfWeek <= 4) {
       this.weekDayDiscount = 2023 * this.sumDessertCount();
       this.discountedTotalPrice -= this.weekDayDiscount;
     } else {
       this.weekendDiscount = 2023 * this.sumMainCount();
       this.discountedTotalPrice -= this.weekendDiscount;
-      console.log(this.discountedTotalPrice);
     }
   }
 
@@ -164,7 +162,6 @@ class App {
       "2023-12-31",
     ];
     const currentDate = `2023-12-${currentDay.toString().padStart(2, "0")}`;
-    console.log(eventCalendar.includes(currentDate));
     return eventCalendar.includes(currentDate);
   }
   giftChampagneEvent() {
