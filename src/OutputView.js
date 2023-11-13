@@ -22,6 +22,7 @@ const OutputView = {
     dDayDiscount,
     weekDayDiscount,
     weekendDiscount,
+    specialDiscount,
     bonusMenuPrice
   ) {
     Console.print("<혜택 내역>");
@@ -40,6 +41,9 @@ const OutputView = {
     }
     if (weekendDiscount > 0) {
       Console.print(`주말 할인: ${(-weekendDiscount).toLocaleString()}원`);
+    }
+    if (specialDiscount > 0) {
+      Console.print(`특별 할인: ${(-specialDiscount).toLocaleString()}원`);
     }
     if (bonusMenuPrice > 0) {
       Console.print(`증정 이벤트: ${(-bonusMenuPrice).toLocaleString()}원`);
