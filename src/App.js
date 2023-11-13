@@ -34,6 +34,7 @@ class App {
       this.dDayDiscount,
       this.weekDayDiscount,
       this.weekendDiscount,
+      this.specialDiscountPrice,
       this.bonusMenuPrice
     );
     OutputView.printTotalBenefitPrice(
@@ -72,6 +73,8 @@ class App {
       this.validation.isLimitCount(this.sumCounts);
     } catch (e) {
       Console.print(e.message);
+      this.orderList = [];
+      console.log(this.orderList);
       await this.inputOrderMenuAndCount();
     }
   }
@@ -147,7 +150,8 @@ class App {
   }
   specialDiscount() {
     if (this.hasSpecialEvent(this.visitDateNum)) {
-      this.discountedTotalPrice -= 1000;
+      this.specialDiscountPrice = 1000;
+      this.discountedTotalPrice -= this.specialDiscountPrice;
     }
   }
 
@@ -159,7 +163,8 @@ class App {
       "2023-12-24",
       "2023-12-31",
     ];
-    const currentDate = `2023-12-${currentDay}`;
+    const currentDate = `2023-12-${currentDay.toString().padStart(2, "0")}`;
+    console.log(eventCalendar.includes(currentDate));
     return eventCalendar.includes(currentDate);
   }
   giftChampagneEvent() {
