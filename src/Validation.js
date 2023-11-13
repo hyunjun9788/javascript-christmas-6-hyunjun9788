@@ -19,7 +19,7 @@ class Validation {
     }
   }
   isValidCount(count) {
-    if (isNaN(count)) {
+    if (!Number.isInteger(count) || Number(count) === 0) {
       throw new Error(ERROR_MESSAGE.INVALID_ORDER);
     }
   }
