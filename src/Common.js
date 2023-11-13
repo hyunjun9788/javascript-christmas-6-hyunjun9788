@@ -5,21 +5,29 @@ class Common {
     this.validation = new Validation();
     this.menuList = [];
   }
+
   processOrderInfo(inputOrder) {
     const items = inputOrder.split(",");
     const processedItems = items.map((item) => {
       const [menuItem, count] = item.split("-");
       const parsedCount = Number(count, 10);
       this.validation.isValidCount(parsedCount);
-      if (this.menuList.hasOwnProperty(menuItem)) {
-        this.menuList[menuItem] = parsedCount;
-      } else {
-        this.menuList[menuItem] = parsedCount;
-      }
-
-      return { menuItem, parsedCount: this.menuList[menuItem] };
+      this.updateMenuList(menuItem, parsedCount);
+      return { menuItem, parsedCount };
     });
+
     return processedItems;
+  }
+
+  updateMenuList(menuItem, parsedCount) {
+    const existingMenu = this.menuList.find(
+      (menu) => menu.menuItem === menuItem
+    );
+    if (existingMenu) {
+      existingMenu.parsedCount = parsedCount;
+    } else {
+      this.menuList.push({ menuItem, parsedCount });
+    }
   }
 
   isIncludeMenu(orderList) {
