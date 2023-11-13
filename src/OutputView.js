@@ -1,17 +1,22 @@
 import { Console } from "@woowacourse/mission-utils";
 
 const OutputView = {
+  printPreviewMessage(date) {
+    Console.print(
+      `12월 ${date}일에 우테코 식당에서 받을 이벤트 혜택 미리보기!\n`
+    );
+  },
   printMenu(orderList) {
     Console.print("<주문 메뉴>");
     orderList.forEach((order) => {
       const menuItem = order.menuItem;
       const count = order.parsedCount;
-      Console.print(`${menuItem} ${count}개\n`);
+      Console.print(`${menuItem} ${count}개`);
     });
   },
   printOriginalPurchasePrice(orginalTotalPrice) {
     Console.print(
-      `<할인 전 총주문 금액>\n${orginalTotalPrice.toLocaleString()}원\n`
+      `\n<할인 전 총주문 금액>\n${orginalTotalPrice.toLocaleString()}원\n`
     );
   },
   printGiftMenu(menu) {
