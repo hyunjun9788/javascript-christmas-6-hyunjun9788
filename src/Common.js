@@ -9,12 +9,15 @@ class Common {
     const items = inputOrder.split(",");
     const processedItems = items.map((item) => {
       const [menuItem, count] = item.split("-");
-      const parsedCount = parseInt(count, 10);
+      const parsedCount = Number(count, 10);
       this.validation.isValidCount(parsedCount);
-      this.validation.isDuplicateMenu(menuItem, this.menuList);
-      this.menuList.push(menuItem);
+      if (this.menuList.hasOwnProperty(menuItem)) {
+        this.menuList[menuItem] = parsedCount;
+      } else {
+        this.menuList[menuItem] = parsedCount;
+      }
 
-      return { menuItem, parsedCount };
+      return { menuItem, parsedCount: this.menuList[menuItem] };
     });
     return processedItems;
   }
