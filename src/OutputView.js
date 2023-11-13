@@ -6,16 +6,16 @@ const OutputView = {
     orderList.forEach((order) => {
       const menuItem = order.menuItem;
       const count = order.parsedCount;
-      Console.print(`${menuItem} ${count}개`);
+      Console.print(`${menuItem} ${count}개\n`);
     });
   },
   printOriginalPurchasePrice(orginalTotalPrice) {
     Console.print(
-      `<할인 전 총주문 금액>\n${orginalTotalPrice.toLocaleString()}원`
+      `<할인 전 총주문 금액>\n${orginalTotalPrice.toLocaleString()}원\n`
     );
   },
   printGiftMenu(menu) {
-    Console.print(`<증정 메뉴>\n${menu ? menu : "없음"}`);
+    Console.print(`<증정 메뉴>\n${menu ? menu : "없음"}\n`);
   },
   printBenefitDetails(
     originalPurchasePrice,
@@ -28,7 +28,7 @@ const OutputView = {
     Console.print("<혜택 내역>");
 
     if (originalPurchasePrice < 10000) {
-      Console.print("없음");
+      Console.print("없음\n");
       return;
     }
     const printDiscount = (label, discount) => {
@@ -45,19 +45,21 @@ const OutputView = {
 
   printTotalBenefitPrice(price, originalPurchasePrice) {
     Console.print(
-      `<총혜택 금액>\n${(originalPurchasePrice >= 10000
+      `\n<총혜택 금액>\n${(originalPurchasePrice >= 10000
         ? -price
         : 0
-      ).toLocaleString()}원`
+      ).toLocaleString()}원\n`
     );
   },
+
   printDiscountedPaymentPrice(price, originalPurchasePrice) {
     const discountedAmount =
       originalPurchasePrice >= 10000 ? price : originalPurchasePrice;
     Console.print(
-      `<할인 후 예상 결제 금액>\n${discountedAmount.toLocaleString()}원`
+      `<할인 후 예상 결제 금액>\n${discountedAmount.toLocaleString()}원\n`
     );
   },
+
   printBadge(badgeName) {
     Console.print(`<12월 이벤트 배지>\n${badgeName ? badgeName : "없음"}`);
   },
