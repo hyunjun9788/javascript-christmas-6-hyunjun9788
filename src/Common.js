@@ -3,7 +3,7 @@ import { MENU_ITEMS } from "./constant/constants.js";
 class Common {
   constructor() {
     this.validation = new Validation();
-    this.menuList = [];
+    this.menuList = {};
   }
 
   processOrderInfo(inputOrder) {
@@ -31,7 +31,7 @@ class Common {
 
   isIncludeMenu(orderList) {
     return orderList.some((order) => {
-      const { menuItem } = order;
+      const menuItem = order.menuItem;
       return Object.values(MENU_ITEMS).some((category) =>
         category.hasOwnProperty(menuItem)
       );
