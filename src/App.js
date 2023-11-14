@@ -1,23 +1,22 @@
 import { Console } from "@woowacourse/mission-utils";
-import InputView from "./InputView.js";
-import Validation from "./Validation.js";
+import Badge from "./Badge.js";
 import Common from "./Common.js";
+import InputView from "./InputView.js";
+import OutputView from "./OutputView.js";
+import Validation from "./Validation.js";
 import {
-  MENU_ITEMS,
-  END_DATE,
   DDAY_DISCOUNT_BASE,
   DISCOUNT_PRICE,
-  STAR_BENEFIT_PRICE,
-  TREE_BENEFIT_PRICE,
-  SANTA_BENEFIT_PRICE,
+  END_DATE,
+  MENU_ITEMS,
   MINIMUM_PRICE_FOR_CHAMPAGNE,
 } from "./constant/constants.js";
-import OutputView from "./OutputView.js";
 
 class App {
   constructor() {
     this.validation = new Validation();
     this.common = new Common();
+    this.badge = new Badge();
     this.originalPurchasePrice = 0;
     this.bonusMenuPrice = 0;
     this.bonusMenu = "";
@@ -28,14 +27,14 @@ class App {
     this.calculateTotalPrices();
     this.applyDiscounts();
     this.calculateTotalBenefitPrice();
-    this.badgeName = this.badgeEvent();
+    this.badge.badgeEvent(this.totalBenefitPrice);
     this.printResults();
   }
 
   async inputVisitDate() {
     try {
       const visitDate = await InputView.inputVisitDate();
-      this.visitDateNum = this.convertToNum(visitDate);
+      this.visitDateNum = Number(visitDate);
       this.validation.isValidInputDate(this.visitDateNum);
     } catch (e) {
       Console.print(e.message);
@@ -46,7 +45,9 @@ class App {
   async inputOrderMenuAndCount() {
     try {
       const orderMenu = await InputView.inputMenuAndCount();
+
       this.orderList = this.common.processOrderInfo(orderMenu);
+
       this.processAndValidateOrder();
     } catch (e) {
       Console.print(e.message);
@@ -63,8 +64,10 @@ class App {
   }
 
   calculateSumCounts() {
-    this.sumCounts = this.sumInputCounts(this.orderList);
-    this.validation.isLimitCount(this.sumCounts);
+    const counts = this.sumInputCounts(this.orderList);
+    this.validation.isLimitCount(counts);
+
+    this.sumCounts = counts;
   }
 
   checkIsMenuIncluded() {
@@ -88,6 +91,7 @@ class App {
 
   calculateTotalPrices() {
     this.discountedTotalPrice = this.getTotalOrderPrice(this.orderList);
+
     this.originalPurchasePrice = this.discountedTotalPrice;
   }
 
@@ -96,10 +100,6 @@ class App {
     this.weekdayAndWeekendDiscount();
     this.specialDiscount();
     this.giftChampagneEvent();
-  }
-
-  convertToNum(Date) {
-    return Number(Date);
   }
 
   sumInputCounts(orderList) {
@@ -127,6 +127,7 @@ class App {
 
   getTotalOrderPrice(orderList) {
     this.totalPrice = 0;
+
     orderList.forEach(this.processOrder.bind(this));
     return this.totalPrice;
   }
@@ -204,24 +205,6 @@ class App {
       this.discountedTotalPrice +
       this.bonusMenuPrice;
   }
-  badgeEvent() {
-    if (
-      this.totalBenefitPrice >= STAR_BENEFIT_PRICE.MIN_PRICE &&
-      this.totalBenefitPrice < STAR_BENEFIT_PRICE.MAX_PRICE
-    ) {
-      this.badgeName = "별";
-    }
-    if (
-      this.totalBenefitPrice >= TREE_BENEFIT_PRICE.MIN_PRICE &&
-      this.totalBenefitPrice < TREE_BENEFIT_PRICE.MAX_PRICE
-    ) {
-      this.badgeName = "트리";
-    }
-    if (this.totalBenefitPrice > SANTA_BENEFIT_PRICE.MIN_PRICE) {
-      this.badgeName = "산타";
-    }
-    return this.badgeName;
-  }
 
   printResults() {
     OutputView.printPreviewMessage(this.visitDateNum);
@@ -244,7 +227,7 @@ class App {
       this.discountedTotalPrice,
       this.originalPurchasePrice
     );
-    OutputView.printBadge(this.badgeName);
+    OutputView.printBadge(this.badge.getName());
   }
 }
 
