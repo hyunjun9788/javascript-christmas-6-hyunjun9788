@@ -54,24 +54,11 @@ class App {
       await this.inputOrderMenuAndCount();
     }
   }
-  processAndValidateOrder() {
-    this.processBeverageOnly();
-    this.calculateSumCounts();
-    this.validateOrder();
-  }
 
   processBeverageOnly() {
-    const isBeverageOnly = this.checkIfBeverageOnly();
-    this.validateBeverageOnlyOrder(isBeverageOnly);
-  }
-
-  checkIfBeverageOnly() {
-    return this.orderList.every(
+    const isBeverageOnly = this.orderList.every(
       (order) => this.common.getCategory(order.menuItem) === "음료"
     );
-  }
-
-  validateBeverageOnlyOrder(isBeverageOnly) {
     this.validation.isBeverageOnlyOrder(isBeverageOnly);
   }
 
@@ -80,9 +67,23 @@ class App {
     this.validation.isLimitCount(this.sumCounts);
   }
 
-  validateOrder() {
+  checkIsMenuIncluded() {
     const isIncludedMenu = this.common.isIncludeMenu(this.orderList);
     this.validation.isValidInputMenuAndCount(isIncludedMenu);
+  }
+
+  checkForDuplicateMenuItems(orderList) {
+    const uniqueMenuItems = new Set(orderList.map((item) => item.menuItem));
+    if (uniqueMenuItems.size !== orderList.length) {
+      this.validation.isDuplicateMenu();
+    }
+  }
+
+  processAndValidateOrder() {
+    this.processBeverageOnly();
+    this.calculateSumCounts();
+    this.checkIsMenuIncluded();
+    this.checkForDuplicateMenuItems(this.orderList);
   }
 
   calculateTotalPrices() {
