@@ -10,7 +10,6 @@ class App {
     this.common = new Common();
     this.originalPurchasePrice = 0;
     this.bonusMenuPrice = 0;
-    this.badgeName = "";
     this.bonusMenu = "";
   }
   async run() {
@@ -46,20 +45,32 @@ class App {
     }
   }
 
-  processAndValidateOrder() {
+  processBeverageOnly() {
     const isBeverageOnly = this.orderList.every(
       (order) => this.common.getCategory(order.menuItem) === "음료"
     );
     this.validation.isBeverageOnlyOrder(isBeverageOnly);
+  }
+
+  calculateSumCounts() {
     this.sumCounts = this.sumInputCounts(this.orderList);
+  }
+
+  validateOrder() {
     const isIncludedMenu = this.common.isIncludeMenu(this.orderList);
     this.validation.isValidInputMenuAndCount(isIncludedMenu);
     this.validation.isLimitCount(this.sumCounts);
   }
 
+  processAndValidateOrder() {
+    this.processBeverageOnly();
+    this.calculateSumCounts();
+    this.validateOrder();
+  }
+
   calculateTotalPrices() {
     this.discountedTotalPrice = this.getTotalOrderPrice(this.orderList);
-    this.originalPurchasePrice = this.getTotalOrderPrice(this.orderList);
+    this.originalPurchasePrice = this.discountedTotalPrice;
   }
 
   applyDiscounts() {
@@ -77,21 +88,29 @@ class App {
     return orderList.reduce((total, order) => total + order.parsedCount, 0);
   }
 
-  getTotalOrderPrice(orderList) {
-    let totalPrice = 0;
+  calculateMenuPrice(category, menuItem, parsedCount) {
+    if (MENU_ITEMS[category][menuItem] !== undefined) {
+      return MENU_ITEMS[category][menuItem] * parsedCount;
+    }
+    return 0;
+  }
 
-    orderList.forEach((order) => {
-      const menuItem = order.menuItem;
-      const parsedCount = order.parsedCount;
-      for (const category in MENU_ITEMS) {
-        if (MENU_ITEMS[category][menuItem] !== undefined) {
-          const menuPrice = MENU_ITEMS[category][menuItem];
-          totalPrice += menuPrice * parsedCount;
-          break;
-        }
-      }
+  processOrder(order) {
+    const { menuItem, parsedCount } = order;
+
+    Object.keys(MENU_ITEMS).forEach((category) => {
+      this.totalPrice += this.calculateMenuPrice(
+        category,
+        menuItem,
+        parsedCount
+      );
     });
-    return totalPrice;
+  }
+
+  getTotalOrderPrice(orderList) {
+    this.totalPrice = 0;
+    orderList.forEach(this.processOrder.bind(this));
+    return this.totalPrice;
   }
 
   christmasDiscount() {
@@ -167,13 +186,13 @@ class App {
   }
   badgeEvent() {
     if (this.totalBenefitPrice >= 5000 && this.totalBenefitPrice < 10000) {
-      this.badgeName += "별";
+      this.badgeName = "별";
     }
     if (this.totalBenefitPrice >= 10000 && this.totalBenefitPrice < 20000) {
-      this.badgeName += "트리";
+      this.badgeName = "트리";
     }
     if (this.totalBenefitPrice > 20000) {
-      this.badgeName += "산타";
+      this.badgeName = "산타";
     }
     return this.badgeName;
   }
