@@ -28,3 +28,25 @@ export const ERROR_MESSAGE = {
   LIMIT_SUM_COUNT: "[ERROR] 메뉴는 한 번에 최대 20개까지만 주문할 수 있습니다.",
   BEVERAGE_ONLY_ORDER: "[ERROR] 음료만 주문 시, 주문할 수 없습니다. ",
 };
+
+export const END_DATE = "2023-12-25";
+export const DDAY_DISCOUNT_BASE = 1000;
+
+export const DISCOUNT_PRICE = {
+  PER_DESSERT_DISCOUNT: 2023,
+  PER_MAIN_DISCOUNT: 2023,
+};
+
+export const STAR_BENEFIT_PRICE = {
+  MIN_PRICE: 5000,
+  MAX_PRICE: 10000,
+};
+export const TREE_BENEFIT_PRICE = {
+  MIN_PRICE: 10000,
+  MAX_PRICE: 20000,
+};
+export const SANTA_BENEFIT_PRICE = {
+  MIN_PRICE: 20000,
+};
+
+export const MINIMUM_PRICE_FOR_CHAMPAGNE = 120000;
