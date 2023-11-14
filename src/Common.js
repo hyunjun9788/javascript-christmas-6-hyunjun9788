@@ -39,12 +39,16 @@ class Common {
   }
 
   getCategory(menuItem) {
-    for (const category in MENU_ITEMS) {
+    const categories = Object.keys(MENU_ITEMS);
+    console.log(categories);
+    const foundCategory = categories.reduce((result, category) => {
       if (MENU_ITEMS[category].hasOwnProperty(menuItem)) {
         return category;
       }
-    }
-    return null;
+      return result;
+    }, null);
+
+    return foundCategory;
   }
 }
 export default Common;
