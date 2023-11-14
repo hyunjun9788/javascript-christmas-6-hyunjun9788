@@ -8,36 +8,34 @@ class Common {
 
   processOrderInfo(inputOrder) {
     const items = inputOrder.split(",");
-    const processedItems = items.map((item) => {
-      const [menuItem, count] = item.split("-");
-      const parsedCount = Number(count, 10);
-      this.validation.isValidCount(parsedCount);
-      this.updateMenuList(menuItem, parsedCount);
-      return { menuItem, parsedCount };
-    });
-
+    const processedItems = items.map(this.processOrderItem.bind(this));
     return processedItems;
   }
 
-  updateMenuList(menuItem, parsedCount) {
-    const existingMenu = this.menuList.find(
-      (menu) => menu.menuItem === menuItem
-    );
-    if (existingMenu) {
-      existingMenu.parsedCount = parsedCount;
-    } else {
-      this.menuList.push({ menuItem, parsedCount });
-    }
+  processOrderItem(item) {
+    const [menuItem, count] = item.split("-");
+    const parsedCount = Number(count);
+    this.validateOrderCount(parsedCount);
+    this.updateMenuCount(menuItem, parsedCount);
+    return { menuItem, parsedCount: this.menuList[menuItem] };
+  }
+
+  validateOrderCount(parsedCount) {
+    this.validation.isValidCount(parsedCount);
+  }
+
+  updateMenuCount(menuItem, parsedCount) {
+    this.menuList[menuItem] = parsedCount;
+    console.log(this.menuList);
   }
 
   isIncludeMenu(orderList) {
-    for (const order of orderList) {
-      const { menuItem, parsedCount } = order;
-      this.isIncludedMenu = Object.values(MENU_ITEMS).some((category) =>
+    return orderList.some((order) => {
+      const { menuItem } = order;
+      return Object.values(MENU_ITEMS).some((category) =>
         category.hasOwnProperty(menuItem)
       );
-    }
-    return this.isIncludedMenu;
+    });
   }
 
   getCategory(menuItem) {
