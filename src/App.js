@@ -2,8 +2,18 @@ import { Console } from "@woowacourse/mission-utils";
 import InputView from "./InputView.js";
 import Validation from "./Validation.js";
 import Common from "./Common.js";
-import { MENU_ITEMS } from "./constant/constants.js";
+import {
+  MENU_ITEMS,
+  END_DATE,
+  DDAY_DISCOUNT_BASE,
+  DISCOUNT_PRICE,
+  STAR_BENEFIT_PRICE,
+  TREE_BENEFIT_PRICE,
+  SANTA_BENEFIT_PRICE,
+  MINIMUM_PRICE_FOR_CHAMPAGNE,
+} from "./constant/constants.js";
 import OutputView from "./OutputView.js";
+
 class App {
   constructor() {
     this.validation = new Validation();
@@ -114,7 +124,7 @@ class App {
   }
 
   christmasDiscount() {
-    const endDate = new Date("2023-12-25");
+    const endDate = new Date(END_DATE);
     const userVisitDate = new Date(`2023-12-${this.visitDateNum}`);
     const timeDifference = endDate.getTime() - userVisitDate.getTime();
     const daysUntilChristmas = Math.floor(
@@ -122,7 +132,7 @@ class App {
     );
 
     if (daysUntilChristmas >= 0 && daysUntilChristmas <= 24) {
-      this.dDayDiscount = 1000 + (24 - daysUntilChristmas) * 100;
+      this.dDayDiscount = DDAY_DISCOUNT_BASE + (24 - daysUntilChristmas) * 100;
       this.discountedTotalPrice -= this.dDayDiscount;
     }
   }
@@ -130,10 +140,12 @@ class App {
   weekdayAndWeekendDiscount() {
     const dayOfWeek = new Date(`2023-12-${this.visitDateNum}`).getDay();
     if (dayOfWeek >= 0 && dayOfWeek <= 4) {
-      this.weekDayDiscount = 2023 * this.sumDessertCount();
+      this.weekDayDiscount =
+        DISCOUNT_PRICE.PER_DESSERT_DISCOUNT * this.sumDessertCount();
       this.discountedTotalPrice -= this.weekDayDiscount;
     } else {
-      this.weekendDiscount = 2023 * this.sumMainCount();
+      this.weekendDiscount =
+        DISCOUNT_PRICE.PER_MAIN_DISCOUNT * this.sumMainCount();
       this.discountedTotalPrice -= this.weekendDiscount;
     }
   }
@@ -170,7 +182,7 @@ class App {
     return eventCalendar.includes(currentDate);
   }
   giftChampagneEvent() {
-    if (this.originalPurchasePrice >= 120000) {
+    if (this.originalPurchasePrice >= MINIMUM_PRICE_FOR_CHAMPAGNE) {
       this.bonusMenu += "샴페인 1개";
       const champagnePrice = MENU_ITEMS.음료.샴페인;
       this.bonusMenuPrice += champagnePrice;
@@ -185,17 +197,24 @@ class App {
       this.bonusMenuPrice;
   }
   badgeEvent() {
-    if (this.totalBenefitPrice >= 5000 && this.totalBenefitPrice < 10000) {
+    if (
+      this.totalBenefitPrice >= STAR_BENEFIT_PRICE.MIN_PRICE &&
+      this.totalBenefitPrice < STAR_BENEFIT_PRICE.MAX_PRICE
+    ) {
       this.badgeName = "별";
     }
-    if (this.totalBenefitPrice >= 10000 && this.totalBenefitPrice < 20000) {
+    if (
+      this.totalBenefitPrice >= TREE_BENEFIT_PRICE.MIN_PRICE &&
+      this.totalBenefitPrice < TREE_BENEFIT_PRICE.MAX_PRICE
+    ) {
       this.badgeName = "트리";
     }
-    if (this.totalBenefitPrice > 20000) {
+    if (this.totalBenefitPrice > SANTA_BENEFIT_PRICE.MIN_PRICE) {
       this.badgeName = "산타";
     }
     return this.badgeName;
   }
+
   printResults() {
     OutputView.printPreviewMessage(this.visitDateNum);
     OutputView.printMenu(this.orderList);
