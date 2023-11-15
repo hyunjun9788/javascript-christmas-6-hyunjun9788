@@ -3,7 +3,7 @@ import { MissionUtils } from "@woowacourse/mission-utils";
 import { EOL as LINE_SEPARATOR } from "os";
 import { MENU_ITEMS, ERROR_MESSAGE } from "../src/constant/constants.js";
 import Validation from "../src/Validation.js";
-import Common from "../src/Common.js";
+import OrderHandler from "../src/OrderHandler.js";
 const mockQuestions = (inputs) => {
   MissionUtils.Console.readLineAsync = jest.fn();
 
@@ -71,11 +71,11 @@ describe("기능 테스트", () => {
   });
   test("orderList에 MENU_ITEMS에 있는 메뉴 항목이 포함되어 있을 때 true를 반환", () => {
     // given
-    const common = new Common();
+    const orderHandler = new OrderHandler();
     const orderList = [{ menuItem: "티본스테이크", parsedCount: 1 }];
 
     // when
-    const result = common.isIncludeMenu(orderList);
+    const result = orderHandler.isIncludeMenu(orderList);
 
     // then
     expect(result).toBe(true);
@@ -83,11 +83,11 @@ describe("기능 테스트", () => {
 
   test("orderList에 MENU_ITEMS에 있는 메뉴 항목이 포함되어 있지 않을 때 false를 반환", () => {
     // given
-    const common = new Common();
+    const orderHandler = new OrderHandler();
     const orderList = [{ menuItem: "떡볶이", parsedCount: 1 }];
 
     // when
-    const result = common.isIncludeMenu(orderList);
+    const result = orderHandler.isIncludeMenu(orderList);
 
     // then
     expect(result).toBe(false);
@@ -95,11 +95,11 @@ describe("기능 테스트", () => {
 
   test("존재하는 메뉴 항목에 대해 올바른 카테고리를 반환", () => {
     // given
-    const common = new Common();
+    const orderHandler = new OrderHandler();
     const menuItem = "티본스테이크";
 
     // when
-    const result = common.getCategory(menuItem);
+    const result = orderHandler.getCategory(menuItem);
 
     // then
     expect(result).toBe("메인");
@@ -107,11 +107,11 @@ describe("기능 테스트", () => {
 
   test("존재하지 않는 메뉴 항목에 대해 null을 반환해야 합니다.", () => {
     // given
-    const common = new Common();
+    const orderHandler = new OrderHandler();
     const menuItem = "존재하지 않는 메뉴";
 
     // when
-    const result = common.getCategory(menuItem);
+    const result = orderHandler.getCategory(menuItem);
 
     // then
     expect(result).toBeNull();
