@@ -78,6 +78,7 @@ describe("기능 테스트", () => {
     // then
     expect(result).toBe(true);
   });
+
   test("orderList에 MENU_ITEMS에 있는 메뉴 항목이 포함되어 있지 않을 때 false를 반환", () => {
     // given
     const app = new App();
@@ -101,6 +102,7 @@ describe("기능 테스트", () => {
     // then
     expect(result).toBe("메인");
   });
+
   test("존재하지 않는 메뉴 항목에 대해 null을 반환해야 합니다.", () => {
     // given
     const app = new App();
@@ -112,8 +114,37 @@ describe("기능 테스트", () => {
     // then
     expect(result).toBeNull();
   });
-});
 
+  test("주문이 모두 음료에 속할 경우 isBeverageOnlyOrder에 true를 전달.", () => {
+    // given
+    const app = new App();
+    app.orderList = [
+      { menuItem: "제로콜라", parsedCount: 2 },
+      { menuItem: "레드와인", parsedCount: 1 },
+    ];
+    app.validation.isBeverageOnlyOrder = jest.fn();
+    // when
+    app.processBeverageOnly();
+
+    // then
+    expect(app.validation.isBeverageOnlyOrder).toHaveBeenCalledWith(true);
+  });
+
+  test("주문 중 하나라도 음료에 속하지 않을 경우 isBeverageOnlyOrder에 false를 전달", () => {
+    // given
+    const app = new App();
+    app.orderList = [
+      { menuItem: "해산물파스타", parsedCount: 2 },
+      { menuItem: "티본스테이크", parsedCount: 1 },
+    ];
+    app.validation.isBeverageOnlyOrder = jest.fn();
+    // when
+    app.processBeverageOnly();
+
+    // then
+    expect(app.validation.isBeverageOnlyOrder).toHaveBeenCalledWith(false);
+  });
+});
 describe("예외 테스트", () => {
   test("날짜 예외 테스트", async () => {
     // given
