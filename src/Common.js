@@ -26,7 +26,6 @@ class Common {
 
   updateMenuCount(menuItem, parsedCount) {
     this.menuList[menuItem] = parsedCount;
-    console.log(this.menuList);
   }
 
   isIncludeMenu(orderList) {
@@ -40,7 +39,6 @@ class Common {
 
   getCategory(menuItem) {
     const categories = Object.keys(MENU_ITEMS);
-    console.log(categories);
     const foundCategory = categories.reduce((result, category) => {
       if (MENU_ITEMS[category].hasOwnProperty(menuItem)) {
         return category;
