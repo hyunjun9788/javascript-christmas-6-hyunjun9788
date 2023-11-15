@@ -67,12 +67,35 @@ describe("기능 테스트", () => {
 
     expectLogContains(getOutput(logSpy), expected);
   });
+  test("orderList에 MENU_ITEMS에 있는 메뉴 항목이 포함되어 있을 때 true를 반환", () => {
+    // given
+    const app = new App();
+    const orderList = [{ menuItem: "티본스테이크", parsedCount: 1 }];
+
+    // when
+    const result = app.isIncludeMenu(orderList);
+
+    // then
+    expect(result).toBe(true);
+  });
+  test("orderList에 MENU_ITEMS에 있는 메뉴 항목이 포함되어 있지 않을 때 false를 반환", () => {
+    // given
+    const app = new App();
+    const orderList = [{ menuItem: "떡볶이", parsedCount: 1 }];
+
+    // when
+    const result = app.isIncludeMenu(orderList);
+
+    // then
+    expect(result).toBe(false);
+  });
 });
 
 describe("예외 테스트", () => {
   test("날짜 예외 테스트", async () => {
     // given
-    const INVALID_DATE_MESSAGE = "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.";
+    const INVALID_DATE_MESSAGE =
+      "[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.";
     const INPUTS_TO_END = ["1", "해산물파스타-2"];
     const logSpy = getLogSpy();
     mockQuestions(["a", ...INPUTS_TO_END]);
@@ -82,12 +105,15 @@ describe("예외 테스트", () => {
     await app.run();
 
     // then
-    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(INVALID_DATE_MESSAGE));
+    expect(logSpy).toHaveBeenCalledWith(
+      expect.stringContaining(INVALID_DATE_MESSAGE)
+    );
   });
 
   test("주문 예외 테스트", async () => {
     // given
-    const INVALID_ORDER_MESSAGE = "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
+    const INVALID_ORDER_MESSAGE =
+      "[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.";
     const INPUTS_TO_END = ["해산물파스타-2"];
     const logSpy = getLogSpy();
     mockQuestions(["3", "제로콜라-a", ...INPUTS_TO_END]);
@@ -97,6 +123,8 @@ describe("예외 테스트", () => {
     await app.run();
 
     // then
-    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining(INVALID_ORDER_MESSAGE));
+    expect(logSpy).toHaveBeenCalledWith(
+      expect.stringContaining(INVALID_ORDER_MESSAGE)
+    );
   });
 });
