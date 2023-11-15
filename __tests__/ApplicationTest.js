@@ -89,6 +89,29 @@ describe("기능 테스트", () => {
     // then
     expect(result).toBe(false);
   });
+
+  test("존재하는 메뉴 항목에 대해 올바른 카테고리를 반환", () => {
+    // given
+    const app = new App();
+    const menuItem = "티본스테이크";
+
+    // when
+    const result = app.getCategory(menuItem);
+
+    // then
+    expect(result).toBe("메인");
+  });
+  test("존재하지 않는 메뉴 항목에 대해 null을 반환해야 합니다.", () => {
+    // given
+    const app = new App();
+    const menuItem = "존재하지 않는 메뉴";
+
+    // when
+    const result = app.getCategory(menuItem);
+
+    // then
+    expect(result).toBeNull();
+  });
 });
 
 describe("예외 테스트", () => {
