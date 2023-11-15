@@ -20,14 +20,16 @@ class App {
     this.originalPurchasePrice = 0;
     this.bonusMenuPrice = 0;
     this.bonusMenu = "";
+    this.menuList = {};
   }
+
   async run() {
     await this.inputVisitDate();
     await this.inputOrderMenuAndCount();
     this.calculateTotalPrices();
     this.applyDiscounts();
     this.calculateTotalBenefitPrice();
-    this.badge.badgeEvent(this.totalBenefitPrice);
+    this.badge.getBadgeName(this.totalBenefitPrice);
     this.printResults();
   }
 
@@ -45,9 +47,7 @@ class App {
   async inputOrderMenuAndCount() {
     try {
       const orderMenu = await InputView.inputMenuAndCount();
-
       this.orderList = this.common.processOrderInfo(orderMenu);
-
       this.processAndValidateOrder();
     } catch (e) {
       Console.print(e.message);
@@ -77,9 +77,7 @@ class App {
 
   checkForDuplicateMenuItems(orderList) {
     const uniqueMenuItems = new Set(orderList.map((item) => item.menuItem));
-    if (uniqueMenuItems.size !== orderList.length) {
-      this.validation.isDuplicateMenu();
-    }
+    this.validation.isDuplicateMenu(uniqueMenuItems, this.orderList);
   }
 
   processAndValidateOrder() {
@@ -172,6 +170,7 @@ class App {
       return category === "메인" ? total + order.parsedCount : total;
     }, 0);
   }
+
   specialDiscount() {
     if (this.hasSpecialEvent(this.visitDateNum)) {
       this.specialDiscountPrice = 1000;
@@ -190,6 +189,7 @@ class App {
     const currentDate = `2023-12-${currentDay.toString().padStart(2, "0")}`;
     return eventCalendar.includes(currentDate);
   }
+
   giftChampagneEvent() {
     if (this.originalPurchasePrice >= MINIMUM_PRICE_FOR_CHAMPAGNE) {
       this.bonusMenu += "샴페인 1개";
@@ -199,6 +199,7 @@ class App {
       this.bonusMenu += "없음";
     }
   }
+
   calculateTotalBenefitPrice() {
     this.totalBenefitPrice =
       this.originalPurchasePrice -
