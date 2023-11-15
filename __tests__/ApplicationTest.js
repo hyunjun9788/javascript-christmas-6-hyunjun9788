@@ -175,6 +175,17 @@ describe("기능 테스트", () => {
     const expectedTotalPrice = originalDiscountedTotalPrice - expectedDiscount;
     expect(app.discountedTotalPrice).toBe(expectedTotalPrice);
   });
+
+  test("방문 날짜가 크리스마스까지 24일 이상일 때 크리스마스 할인 적용 테스트", () => {
+    const app = new App();
+    app.visitDateNum = 26;
+    const originalDiscountedTotalPrice = 1000;
+    app.discountedTotalPrice = originalDiscountedTotalPrice;
+
+    app.christmasDiscount();
+
+    expect(app.discountedTotalPrice).toBe(originalDiscountedTotalPrice);
+  });
 });
 
 describe("예외 테스트", () => {
