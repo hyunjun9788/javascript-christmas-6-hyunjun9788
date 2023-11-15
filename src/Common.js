@@ -8,7 +8,7 @@ class Common {
 
   processOrderInfo(inputOrder) {
     const items = inputOrder.split(",");
-    const processedItems = items.map(this.processOrderItem.bind(this));
+    const processedItems = items.map((item) => this.processOrderItem(item));
     return processedItems;
   }
 
