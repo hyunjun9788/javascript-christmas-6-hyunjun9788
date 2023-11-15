@@ -162,7 +162,21 @@ describe("기능 테스트", () => {
     expect(app.validation.isLimitCount).toHaveBeenCalledWith(3);
     expect(app.sumCounts).toBe(3);
   });
+
+  test("방문 날짜가 크리스마스까지 24일 이내일 때 크리스마스 할인 적용 테스트", () => {
+    const app = new App();
+    app.visitDateNum = 1;
+    const originalDiscountedTotalPrice = 1000;
+    app.discountedTotalPrice = originalDiscountedTotalPrice;
+
+    app.christmasDiscount();
+
+    const expectedDiscount = 1000 + (app.visitDateNum - 1) * 100;
+    const expectedTotalPrice = originalDiscountedTotalPrice - expectedDiscount;
+    expect(app.discountedTotalPrice).toBe(expectedTotalPrice);
+  });
 });
+
 describe("예외 테스트", () => {
   test("날짜 예외 테스트", async () => {
     // given
