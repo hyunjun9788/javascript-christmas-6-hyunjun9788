@@ -186,6 +186,34 @@ describe("기능 테스트", () => {
 
     expect(app.discountedTotalPrice).toBe(originalDiscountedTotalPrice);
   });
+
+  test("특별 이벤트가 있는 경우 true를 반환", () => {
+    const app = new App();
+    const specialEventDates = ["2023-12-03", "2023-12-10", "2023-12-17"];
+    app.hasSpecialEvent = jest.fn().mockImplementation((currentDay) => {
+      return specialEventDates.includes(
+        `2023-12-${currentDay.toString().padStart(2, "0")}`
+      );
+    });
+
+    const result = app.hasSpecialEvent(3);
+
+    expect(result).toBe(true);
+  });
+
+  test("특별 이벤트가 없는 경우 false를 반환", () => {
+    const app = new App();
+    const specialEventDates = ["2023-12-03", "2023-12-10", "2023-12-17"];
+    app.hasSpecialEvent = jest.fn().mockImplementation((currentDay) => {
+      return specialEventDates.includes(
+        `2023-12-${currentDay.toString().padStart(2, "0")}`
+      );
+    });
+
+    const result = app.hasSpecialEvent(5);
+
+    expect(result).toBe(false);
+  });
 });
 
 describe("예외 테스트", () => {
