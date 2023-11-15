@@ -1,6 +1,6 @@
 import { Console } from "@woowacourse/mission-utils";
 import Badge from "./Badge.js";
-import Common from "./Common.js";
+import OrderHandler from "./OrderHandler.js";
 import InputView from "./InputView.js";
 import OutputView from "./OutputView.js";
 import Validation from "./Validation.js";
@@ -15,7 +15,7 @@ import {
 class App {
   constructor() {
     this.validation = new Validation();
-    this.common = new Common();
+    this.orderHandler = new OrderHandler();
     this.badge = new Badge();
     this.originalPurchasePrice = 0;
     this.bonusMenuPrice = 0;
@@ -47,7 +47,7 @@ class App {
   async inputOrderMenuAndCount() {
     try {
       const orderMenu = await InputView.inputMenuAndCount();
-      this.orderList = this.common.processOrderInfo(orderMenu);
+      this.orderList = this.orderHandler.processOrderItems(orderMenu);
       this.processAndValidateOrder();
     } catch (e) {
       Console.print(e.message);
@@ -58,7 +58,7 @@ class App {
 
   processBeverageOnly() {
     const isBeverageOnly = this.orderList.every(
-      (order) => this.common.getCategory(order.menuItem) === "음료"
+      (order) => this.orderHandler.getCategory(order.menuItem) === "음료"
     );
     this.validation.isBeverageOnlyOrder(isBeverageOnly);
   }
@@ -71,7 +71,7 @@ class App {
   }
 
   checkIsMenuIncluded() {
-    const isIncludedMenu = this.common.isIncludeMenu(this.orderList);
+    const isIncludedMenu = this.orderHandler.isIncludeMenu(this.orderList);
     this.validation.isValidInputMenuAndCount(isIncludedMenu);
   }
 
@@ -126,7 +126,7 @@ class App {
   getTotalOrderPrice(orderList) {
     this.totalPrice = 0;
 
-    orderList.forEach(this.processOrder.bind(this));
+    orderList.forEach((order) => this.processOrder(order));
     return this.totalPrice;
   }
 
@@ -159,14 +159,14 @@ class App {
 
   sumDessertCount() {
     return this.orderList.reduce((total, order) => {
-      const category = this.common.getCategory(order.menuItem);
+      const category = this.orderHandler.getCategory(order.menuItem);
       return category === "디저트" ? total + order.parsedCount : total;
     }, 0);
   }
 
   sumMainCount() {
     return this.orderList.reduce((total, order) => {
-      const category = this.common.getCategory(order.menuItem);
+      const category = this.orderHandler.getCategory(order.menuItem);
       return category === "메인" ? total + order.parsedCount : total;
     }, 0);
   }
