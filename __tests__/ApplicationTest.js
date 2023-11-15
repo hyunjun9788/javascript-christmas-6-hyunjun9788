@@ -1,7 +1,6 @@
 import App from "../src/App.js";
 import { MissionUtils } from "@woowacourse/mission-utils";
 import { EOL as LINE_SEPARATOR } from "os";
-
 const mockQuestions = (inputs) => {
   MissionUtils.Console.readLineAsync = jest.fn();
 
@@ -144,6 +143,25 @@ describe("기능 테스트", () => {
     // then
     expect(app.validation.isBeverageOnlyOrder).toHaveBeenCalledWith(false);
   });
+
+  test("주문 합계가 LIMIT_ORDER_COUNT를 초과하지 않을 때 정상적으로 동작하는지 테스트", () => {
+    // given
+    const app = new App();
+    app.orderList = [
+      { menuItem: "해산물파스타", parsedCount: 2 },
+      { menuItem: "레드와인", parsedCount: 1 },
+    ];
+
+    // Mock 함수로 대체
+    app.validation.isLimitCount = jest.fn();
+
+    // when
+    app.calculateSumCounts();
+
+    // then
+    expect(app.validation.isLimitCount).toHaveBeenCalledWith(3);
+    expect(app.sumCounts).toBe(3);
+  });
 });
 describe("예외 테스트", () => {
   test("날짜 예외 테스트", async () => {
@@ -179,6 +197,20 @@ describe("예외 테스트", () => {
     // then
     expect(logSpy).toHaveBeenCalledWith(
       expect.stringContaining(INVALID_ORDER_MESSAGE)
+    );
+  });
+
+  test("메뉴 주문 수의 합이 제한을 초과하면 에러 발생 테스트", () => {
+    // given
+    const app = new App();
+    app.orderList = [
+      { menuItem: "제로콜라", parsedCount: 12 },
+      { menuItem: "해산물파스타", parsedCount: 10 },
+    ];
+
+    // when, then
+    expect(() => app.calculateSumCounts()).toThrowError(
+      "[ERROR] 메뉴는 한 번에 최대 20개까지만 주문할 수 있습니다."
     );
   });
 });
