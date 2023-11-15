@@ -1,6 +1,7 @@
 import App from "../src/App.js";
 import { MissionUtils } from "@woowacourse/mission-utils";
 import { EOL as LINE_SEPARATOR } from "os";
+import { MENU_ITEMS } from "../src/constant/constants.js";
 const mockQuestions = (inputs) => {
   MissionUtils.Console.readLineAsync = jest.fn();
 
@@ -213,6 +214,25 @@ describe("기능 테스트", () => {
     const result = app.hasSpecialEvent(5);
 
     expect(result).toBe(false);
+  });
+  test("원본 구매 가격이 샴페인 지급 기준 이상인 경우, 샴페인 지급", () => {
+    const app = new App();
+    app.originalPurchasePrice = 200000;
+
+    app.giftChampagneEvent();
+
+    expect(app.bonusMenu).toBe("샴페인 1개");
+    expect(app.bonusMenuPrice).toBe(MENU_ITEMS.음료.샴페인);
+  });
+
+  test("원본 구매 가격이 샴페인 지급 기준 미만인 경우, 샴페인 지급되지 않음", () => {
+    const app = new App();
+    app.originalPurchasePrice = 5000;
+
+    app.giftChampagneEvent();
+
+    expect(app.bonusMenu).toBe("없음");
+    expect(app.bonusMenuPrice).toBe(0);
   });
 });
 
