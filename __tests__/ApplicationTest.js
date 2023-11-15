@@ -213,4 +213,20 @@ describe("예외 테스트", () => {
       "[ERROR] 메뉴는 한 번에 최대 20개까지만 주문할 수 있습니다."
     );
   });
+
+  test("중복된 메뉴에 대한 예외 테스트", () => {
+    // Given
+    const app = new App();
+    const orderListWithDuplicate = [
+      { menuItem: "제로콜라", parsedCount: 2 },
+      { menuItem: "티본스테이크", parsedCount: 1 },
+      { menuItem: "제로콜라", parsedCount: 3 },
+    ];
+
+    app.orderList = orderListWithDuplicate;
+
+    expect(() => {
+      app.checkForDuplicateMenuItems(app.orderList);
+    }).toThrowError("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+  });
 });
