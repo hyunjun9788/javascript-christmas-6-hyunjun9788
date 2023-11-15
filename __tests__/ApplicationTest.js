@@ -1,7 +1,8 @@
 import App from "../src/App.js";
 import { MissionUtils } from "@woowacourse/mission-utils";
 import { EOL as LINE_SEPARATOR } from "os";
-import { MENU_ITEMS } from "../src/constant/constants.js";
+import { MENU_ITEMS, ERROR_MESSAGE } from "../src/constant/constants.js";
+import Validation from "../src/Validation.js";
 const mockQuestions = (inputs) => {
   MissionUtils.Console.readLineAsync = jest.fn();
 
@@ -271,6 +272,16 @@ describe("예외 테스트", () => {
     expect(logSpy).toHaveBeenCalledWith(
       expect.stringContaining(INVALID_ORDER_MESSAGE)
     );
+  });
+
+  test("개수가 소수이면 에러 발생 테스트", () => {
+    const validation = new Validation();
+
+    const invalidCount = 2.5;
+
+    expect(() => {
+      validation.isValidCount(invalidCount);
+    }).toThrowError(ERROR_MESSAGE.INVALID_ORDER);
   });
 
   test("메뉴 주문 수의 합이 제한을 초과하면 에러 발생 테스트", () => {
